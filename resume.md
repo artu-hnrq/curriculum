@@ -15,9 +15,11 @@
 
 ## Skills
 
-- Skill 1
-- Skill 2
+- Skill 10
+- Skill 22
 - Skill 3
+
+---
 
 ## Projects
 

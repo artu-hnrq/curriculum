@@ -1,0 +1,11 @@
+body {
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    /* Equivalent to 210mm */
+    width: 794px;
+}
+
+h1,
+h2 {
+    color: rgb(0, 166, 255);
+}

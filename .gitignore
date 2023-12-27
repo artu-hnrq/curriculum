@@ -1,1 +1,5 @@
-resume.pdf
+# Build
+node_modules/
+
+# Generated files
+dist/
