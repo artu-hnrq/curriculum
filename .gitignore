@@ -1,4 +1,7 @@
 # Build
+lib/
+
+# Development
 node_modules/
 
 # Generated files

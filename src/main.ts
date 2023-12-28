@@ -8,7 +8,7 @@ import { unified } from 'unified'
 import { assert } from 'console'
 
 
-async function processContent(markdown) {
+async function processContent(markdown: string) {
     return unified()
         .use(remarkParse)
         .use(remark2rehype)
@@ -20,7 +20,7 @@ async function processContent(markdown) {
         .process(markdown)
 }
 
-async function generateHTML(content, output) {
+async function generateHTML(content: string, output: string) {
     const htmlContent = await processContent(fs.readFileSync(content, 'utf-8'))
     fs.writeFileSync(output, htmlContent.toString())
 }

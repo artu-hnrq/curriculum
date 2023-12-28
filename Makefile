@@ -15,18 +15,19 @@ GNUMAKEFLAGS += --no-print-directory
 
 # Path record
 ROOT_DIR ?= $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+TRANSPILED_DIR ?= lib
 OUTPUT_DIR ?= dist
 
 # Target files
 ENV_FILE ?= .env
-RESUME ?= resume
 MD ?= $(RESUME).md
 CSS ?= $(RESUME).css
 HTML ?= $(OUTPUT_DIR)/$(RESUME).html
 PDF ?= $(OUTPUT_DIR)/$(RESUME).pdf
 
 EPHEMERAL_ARCHIVES ?= \
-	$(OUTPUT_DIR)
+	$(OUTPUT_DIR) \
+	$(TRANSPILED_DIR)
 
 # Executables definition
 DOCKER ?= docker run \
@@ -34,6 +35,9 @@ DOCKER ?= docker run \
 			--volume $(ROOT_DIR):/data \
 			--workdir /data \
 			--user $(shell id -u):$(shell id -g)
+
+# Behavior definition
+RESUME ?= resume
 
 
 %: # Treat unrecognized targets
@@ -47,13 +51,16 @@ help:: ## Show this help
 init:: veryclean ## Initialize development environment
 	npm install
 
+build:: ## Transpile source code
+	npm run build
+
 execute:: clean compile run ## Export environment configuration
 	
 compile:: dir ## Treat Markdown content processing
-	node main.js $(MD) $(HTML)
+	npm run compile -- $(MD) $(HTML)
 
 preview:: ## Execute resume generation
-	npx http-server -d $(HTML) -o $(HTML) -c-1
+	npm run preview -- $(HTML) -o $(HTML)
 
 run:: dir ## Execute resume generation
 	$(DOCKER) surnet/alpine-wkhtmltopdf:3.19.0-0.12.6-small \
