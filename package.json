@@ -2,13 +2,15 @@
   "name": "curriculum",
   "version": "0.0.2",
   "description": "A resume PDF builder for MD content",
-  "main": "dist/main.js",
+  "main": "lib/main.js",
   "type": "module",
   "scripts": {
-    "node-version": "node -v",
+    "start": "contentlayer build",
+    "dev": "node --loader ts-node/esm/transpile-only src/main.ts",
     "build": "tsc",
-    "compile": "node --loader ts-node/esm/transpile-only src/main.ts",
-    "preview": "npx http-server -d -c-1"
+    "compile": "node lib/main.js",
+    "preview": "npx http-server -c-1 -d",
+    "node-version": "node -v"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,8 @@
   "author": "Arthur Henrique <Arthur.Henrique.Della.Fraga@gmail.com>",
   "license": "GPL-3.0",
   "devDependencies": {
+    "@contentlayer/source-files": "^0.3.4",
+    "contentlayer": "^0.3.4",
     "rehype-document": "^7.0.3",
     "rehype-format": "^5.0.0",
     "rehype-react": "^8.0.0",

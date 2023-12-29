@@ -1,3 +1,7 @@
+---
+type: Resume
+---
+
 # Your Name
 
 **Email:** <your.email@example.com>  

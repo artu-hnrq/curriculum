@@ -3,6 +3,7 @@ lib/
 
 # Development
 node_modules/
+.contentlayer/
 
 # Generated files
 dist/

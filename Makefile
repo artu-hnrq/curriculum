@@ -15,19 +15,22 @@ GNUMAKEFLAGS += --no-print-directory
 
 # Path record
 ROOT_DIR ?= $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-TRANSPILED_DIR ?= lib
-OUTPUT_DIR ?= dist
+SOURCE_DIR ?= src
+DATA_DIR ?= .contentlayer/
+LIB_DIR ?= lib
+DIST_DIR ?= dist
 
 # Target files
 ENV_FILE ?= .env
 MD ?= $(RESUME).md
-CSS ?= $(RESUME).css
-HTML ?= $(OUTPUT_DIR)/$(RESUME).html
-PDF ?= $(OUTPUT_DIR)/$(RESUME).pdf
+CSS ?= $(SOURCE_DIR)/$(RESUME).css
+HTML ?= $(DIST_DIR)/$(RESUME).html
+PDF ?= $(DIST_DIR)/$(RESUME).pdf
 
 EPHEMERAL_ARCHIVES ?= \
-	$(OUTPUT_DIR) \
-	$(TRANSPILED_DIR)
+	$(DIST_DIR) \
+	$(LIB_DIR) \
+	**/$(DATA_DIR)
 
 # Executables definition
 DOCKER ?= docker run \
@@ -51,13 +54,21 @@ help:: ## Show this help
 init:: veryclean ## Initialize development environment
 	npm install
 
-build:: ## Transpile source code
+build:: start ## Transpile source code
 	npm run build
+	cp --force --recursive $(DATA_DIR) $(LIB_DIR)
 
-execute:: clean compile run ## Export environment configuration
-	
+dev:: start dir ## Run typescript code
+	npm run dev -- $(HTML)
+
+execute:: start compile run ## Export environment configuration
+
+start:: clean ## Run contentlayer
+	npm run start
+	cp --force --recursive $(DATA_DIR) $(SOURCE_DIR)
+
 compile:: dir ## Treat Markdown content processing
-	npm run compile -- $(MD) $(HTML)
+	npm run compile -- $(HTML)
 
 preview:: ## Execute resume generation
 	npm run preview -- $(HTML) -o $(HTML)
@@ -71,7 +82,8 @@ run:: dir ## Execute resume generation
 		$(PDF)
 
 dir:: ## Create project directories
-	mkdir --parent $(OUTPUT_DIR)
+	mkdir --parent $(DIST_DIR)
+	cp --force $(CSS) $(DIST_DIR)
 
 clean:: ## Delete project ephemeral archives
 	-rm -fr $(EPHEMERAL_ARCHIVES)
