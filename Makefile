@@ -16,7 +16,7 @@ GNUMAKEFLAGS += --no-print-directory
 # Path record
 ROOT_DIR ?= $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 SOURCE_DIR ?= src
-DATA_DIR ?= .contentlayer/
+DATA_DIR ?= .contentlayer
 LIB_DIR ?= lib
 DIST_DIR ?= dist
 
